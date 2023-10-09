@@ -1,5 +1,9 @@
 services:
-	- App\Router\RouterFactory::createRouter
+    - App\Router\RouterFactory::createRouter
+    - App\service\Authenticator
+
+    # Komponenty
+    - App\Components\LoginForm\ILoginFormFactory
 
 
 search:

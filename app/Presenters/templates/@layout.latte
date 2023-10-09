@@ -50,7 +50,7 @@
 					<h1>SRP</h1>
 				</div>
 				<div id="user-name-wrapper" class="col s3 push-l3 right-align">
-					<a href="#!" class="btn-logout tooltipped" data-position="bottom" data-tooltip="Odhlásit se">Odhlásit</a> (admin)
+					<a n:href="Login:logout" class="btn-logout tooltipped" data-position="bottom" data-tooltip="Odhlásit se">Odhlásit</a> (admin)
 				</div>
 			</div>
 
@@ -62,16 +62,18 @@
 
 			<div id="content" class="row">
 				<div class="col s12">
-					<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
 
 					{include content}
+
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<script src="{$basePath}/assets/js/materialize.min.js"></script>
-	<script src="https://nette.github.io/resources/js/3/netteForms.min.js"></script>
+
+	{include __DIR__ . '/flashMessages.latte'}
+
 	<script>
 		document.addEventListener('DOMContentLoaded', function()
 		{

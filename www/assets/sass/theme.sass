@@ -1,24 +1,7 @@
+@import 'variables'
+
 $mainMenuWidth: 70px
 
-$fontColor: #444444
-
-$mainLayoutColor: #1766c0
-$mainLayoutTextColor: #ffffff
-$layoutColor: #0b8ce0
-$menuActiveItemColor: #2f76c6
-$mainLayoutShadowBoxColor: #424242
-
-$contentTitleShadowBoxColor: rgba(0,0,0,.45)
-$contentBackgroundColor: #eeeeee
-$contentBlockBackgroundColor: #ffffff
-$contentBlockShadowBoxColor: rgba(0,0,0,.15)
-
-$buttonShadowBoxColor: rgba(0,0,0,.35)
-
-$tableHeaderBackgroundColor: #f5f5f5
-$tableHeaderColor: #b9b9b9
-$tableBodyActionColor: #e1e2e8
-$tableBorderColor: #0000001E
 
 #main-container
   margin-bottom: 0px
@@ -119,17 +102,15 @@ $tableBorderColor: #0000001E
       .btn-action
         background-color: $layoutColor
         color: $mainLayoutTextColor
-        text-transform: uppercase
-        box-shadow: 1px 1px 7px $buttonShadowBoxColor
-        padding: 0px 0px 7px 0px
         text-align: center
         display: inline-block
         width: 210px
+        height: auto !important
 
         .material-icons
           margin-right: 10px
           position: relative
-          top: 6px
+          top: 4px
 
       table
         margin-top: 20px

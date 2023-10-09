@@ -1,0 +1,8 @@
+{* FlashMessages *}
+{if !empty($flashes)}
+    <script>
+        {foreach $flashes as $flash}
+        M.toast({ html: {$flash->message} });
+        {/foreach}
+    </script>
+{/if}
