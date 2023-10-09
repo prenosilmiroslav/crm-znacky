@@ -2,18 +2,82 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title>{ifset title}{include title|stripHtml} | {/ifset}SRP</title>
 
-	<title>{ifset title}{include title|stripHtml} | {/ifset}Nette Web</title>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="{$basePath}/assets/css/materialize.min.css" />
+	<link rel="stylesheet" href="{$basePath}/assets/css/theme.css" />
 </head>
 
 <body>
-	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+	<div id="main-container" class="row">
+		<div id="main-menu" class="col s1 center-align">
 
-	{include content}
+			<ul>
+				<li>
+					<a href="#!">
+						<i class="material-icons">menu</i>
+					</a>
+				</li>
+				<li>
+					<a href="" class="tooltipped" data-position="right" data-tooltip="Dashboard">
+						<i class="material-icons">dashboard</i>
+					</a>
+				</li>
+				<li>
+					<a href="" class="tooltipped" data-position="right" data-tooltip="Správa uživatelů">
+						<i class="material-icons">supervisor_account</i>
+					</a>
+				</li>
+				<li>
+					<a href="#!">
+						<i class="material-icons">new_releases</i>
+					</a>
+				</li>
+				<li class="active tooltipped" data-position="right" data-tooltip="Výpis značek">
+					<a href="">
+						<i class="material-icons">local_offer</i>
+					</a>
+				</li>
+			</ul>
 
-	{block scripts}
+		</div>
+
+		<div id="content-wrapper" class="col s11">
+			<div id="main-header" class="row">
+				<div class="col s6">
+					<h1>SRP</h1>
+				</div>
+				<div id="user-name-wrapper" class="col s3 push-l3 right-align">
+					<a href="#!" class="btn-logout tooltipped" data-position="bottom" data-tooltip="Odhlásit se">Odhlásit</a> (admin)
+				</div>
+			</div>
+
+			<div id="content-title" class="row">
+				<div class="col s12">
+					<a href="" class="btn-back tooltipped" data-position="bottom" data-tooltip="Zpět na dashboard"><i class="material-icons">arrow_back</i></a> Značky
+				</div>
+			</div>
+
+			<div id="content" class="row">
+				<div class="col s12">
+					<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+
+					{include content}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="{$basePath}/assets/js/materialize.min.js"></script>
 	<script src="https://nette.github.io/resources/js/3/netteForms.min.js"></script>
-	{/block}
+	<script>
+		document.addEventListener('DOMContentLoaded', function()
+		{
+			M.Tooltip.init(document.querySelectorAll('.tooltipped'));
+		});
+	</script>
+	{block scripts}{/block}
 </body>
 </html>
