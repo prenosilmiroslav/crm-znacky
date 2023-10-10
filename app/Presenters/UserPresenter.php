@@ -26,6 +26,9 @@ final class UserPresenter extends BasePresenter
     /** @var int $itemForCount @persistent */
     public int $itemForCount;
 
+    /** @var int $page @persistent */
+    public int $page;
+
     /** @var string $order @persistent */
     public string $order;
 
@@ -41,16 +44,16 @@ final class UserPresenter extends BasePresenter
 
         // Výběr stránky a validace hodnoty
         $page = 1;
-        if (!empty($params['page']) && $params['page'] > 0 && Validators::is($params['page'], 'int'))
+        if (!empty($this->page) && $this->page > 0 && Validators::is($this->page, 'int'))
         {
-            $page = (int) $params['page'];
+            $page = $this->page;
         }
 
         // Počet položek na stránku musí odpovídat zadanému seznamu hodnot v configu
         $itemForCount = $itemForPageList[0];
         if (!empty($this->itemForCount) && Validators::is($this->itemForCount, 'int') && in_array($this->itemForCount, $itemForPageList))
         {
-            $itemForCount = (int) $this->itemForCount;
+            $itemForCount = $this->itemForCount;
         }
 
         $paginator = new Paginator();
