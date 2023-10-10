@@ -10,7 +10,7 @@ class Parameters extends BaseModel
 {
 
     /** @var array $parameters */
-    private $parameters;
+    private array $parameters;
 
 
     public function __construct(Explorer $database, array $parameters)

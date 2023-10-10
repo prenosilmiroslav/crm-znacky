@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Presenters;
 
 use App\Components\LoginForm\ILoginFormFactory;
+use App\Components\LoginForm\LoginForm;
 use App\Presenters\BasePresenter;
 
 final class LoginPresenter extends BasePresenter
 {
 
     /** @var ILoginFormFactory $loginFormFactory @inject */
-    public $loginFormFactory;
+    public ILoginFormFactory $loginFormFactory;
 
 
     public function renderLogin()
@@ -30,7 +31,7 @@ final class LoginPresenter extends BasePresenter
         $this->redirect('Login:login');
     }
 
-    protected function createComponentLoginForm()
+    protected function createComponentLoginForm(): LoginForm
     {
         return $this->loginFormFactory->create();
     }

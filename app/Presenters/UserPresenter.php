@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Presenters;
 
 use App\Components\UserForm\IUserFormFactory;
+use App\Components\UserForm\UserForm;
 use App\Models\Parameters;
 use App\Models\User;
 use Nette\Utils\Paginator;
@@ -13,22 +14,22 @@ final class UserPresenter extends BasePresenter
 {
 
     /** @var User $userModel @inject */
-    public $userModel;
+    public User $userModel;
 
     /** @var Parameters $parametersModel @inject */
-    public $parametersModel;
+    public Parameters $parametersModel;
 
     /** @var IUserFormFactory $userFormFactory @inject */
-    public $userFormFactory;
+    public IUserFormFactory $userFormFactory;
 
     /** @var int $itemForCount @persistent */
-    public $itemForCount;
+    public int $itemForCount;
 
     /** @var string $order @persistent */
-    public $order;
+    public string $order;
 
     /** @var string $by @persistent */
-    public $by;
+    public string $by;
 
 
     public function renderDefault()
@@ -87,7 +88,7 @@ final class UserPresenter extends BasePresenter
         $this->sendJson(['success' => FALSE]);
     }
 
-    protected function createComponentUserForm()
+    protected function createComponentUserForm(): UserForm
     {
         return $this->userFormFactory->create();
     }

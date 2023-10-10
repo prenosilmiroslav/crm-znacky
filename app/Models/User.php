@@ -19,10 +19,10 @@ class User extends BaseModel
     const PASSWORD_SALT_LENGTH = 32;
 
     /** @var string $tableName */
-    private $tableName = 'user';
+    private string $tableName = 'user';
 
     /** @var Passwords $passwords */
-    private $passwords;
+    private Passwords $passwords;
 
 
     public function __construct(Explorer $database, Passwords $passwords)
@@ -54,6 +54,7 @@ class User extends BaseModel
         // Řazení
         if (!empty($options['order']))
         {
+            // Ošetření vstupu pro sortování výsledků
             $sort = !empty($options['by']) && in_array(Strings::upper($options['by']), $this->allowSort) ? Strings::upper($options['by']) : $this->allowSort[0];
 
             switch ($options['order'])

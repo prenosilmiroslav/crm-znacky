@@ -13,10 +13,10 @@ class BaseModel
     use SmartObject;
 
     /** @var Explorer $database */
-    protected $database;
+    protected Explorer $database;
 
     /** @var string[] $allowSort Povolené řazení */
-    protected $allowSort = ['ASC', 'DESC'];
+    protected array $allowSort = ['ASC', 'DESC'];
 
 
     public function __construct(Explorer $database)

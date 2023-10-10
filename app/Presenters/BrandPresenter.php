@@ -2,6 +2,7 @@
 
 namespace App\Presenters;
 
+use App\Components\BrandForm\BrandForm;
 use App\Components\BrandForm\IBrandFormFactory;
 use App\Models\Brand;
 use App\Models\Parameters;
@@ -12,22 +13,22 @@ class BrandPresenter extends BasePresenter
 {
 
     /** @var Brand $brandModel @inject */
-    public $brandModel;
+    public Brand $brandModel;
 
     /** @var Parameters $parametersModel @inject */
-    public $parametersModel;
+    public Parameters $parametersModel;
 
     /** @var IBrandFormFactory $brandFormFactory @inject */
-    public $brandFormFactory;
+    public IBrandFormFactory $brandFormFactory;
 
     /** @var int $itemForCount @persistent */
-    public $itemForCount;
+    public int $itemForCount;
 
     /** @var string $order @persistent */
-    public $order;
+    public string $order;
 
     /** @var string $by @persistent */
-    public $by;
+    public string $by;
 
 
     public function renderDefault()
@@ -86,7 +87,7 @@ class BrandPresenter extends BasePresenter
         $this->sendJson(['success' => FALSE]);
     }
 
-    protected function createComponentBrandForm()
+    protected function createComponentBrandForm(): BrandForm
     {
         return $this->brandFormFactory->create();
     }

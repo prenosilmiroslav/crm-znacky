@@ -14,13 +14,13 @@ class Authenticator implements \Nette\Security\Authenticator
 {
 
     /** @var Explorer $database */
-    private $database;
+    private Explorer $database;
 
     /** @var Passwords $passwords */
-    private $passwords;
+    private Passwords $passwords;
 
     /** @var User $userModel */
-    private $userModel;
+    private User $userModel;
 
 
     public function __construct(Explorer $connection, Passwords $passwords, User $user)

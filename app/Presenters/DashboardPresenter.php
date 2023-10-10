@@ -11,10 +11,10 @@ final class DashboardPresenter extends BasePresenter
 {
 
     /** @var Brand $brandModel @inject */
-    public $brandModel;
+    public Brand $brandModel;
 
     /** @var User $userModel @inject */
-    public $userModel;
+    public User $userModel;
 
 
     public function renderDefault()

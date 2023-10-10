@@ -13,7 +13,7 @@ class Brand extends BaseModel
 {
 
     /** @var string $tableName */
-    private $tableName = 'brand';
+    private string $tableName = 'brand';
 
 
     /**
@@ -37,6 +37,7 @@ class Brand extends BaseModel
         // Řazení
         if (!empty($options['order']))
         {
+            // Ošetření vstupu pro sortování výsledků
             $sort = !empty($options['by']) && in_array(Strings::upper($options['by']), $this->allowSort) ? Strings::upper($options['by']) : $this->allowSort[0];
 
             switch ($options['order'])

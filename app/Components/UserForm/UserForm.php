@@ -11,7 +11,7 @@ class UserForm extends Control
 {
 
     /** @var User $userModel */
-    private $userModel;
+    private User $userModel;
 
 
     public function __construct(User $user)

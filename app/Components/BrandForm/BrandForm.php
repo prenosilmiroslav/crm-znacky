@@ -11,7 +11,7 @@ class BrandForm extends Control
 {
 
     /** @var Brand $brandModel */
-    private $brandModel;
+    private Brand $brandModel;
 
 
     public function __construct(Brand $brand)

@@ -9,7 +9,7 @@ class PageHeader extends Control
 {
 
     /** @var array $pageHeaderParameters */
-    private $pageHeaderParameters;
+    private array $pageHeaderParameters;
 
 
     public function __construct(Parameters $parameters)
