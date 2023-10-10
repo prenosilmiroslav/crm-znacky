@@ -1,46 +1,40 @@
-Nette Web Project
-=================
-
-This is a simple, skeleton application using the [Nette](https://nette.org). This is meant to
-be used as a starting point for your new projects.
-
-[Nette](https://nette.org) is a popular tool for PHP web development.
-It is designed to be the most usable and friendliest as possible. It focuses
-on security and performance and is definitely one of the safest PHP frameworks.
-
-If you like Nette, **[please make a donation now](https://nette.org/donate)**. Thank you!
-
-
-Requirements
+Agenda pro značky zboží
 ------------
 
-- Web Project for Nette 3.1 requires PHP 8.0
+Testovací aplikace pro agendu zboží k pohovoru. SQL soubor se strukturou, daty a 
+ER diagram naleznete v adresáři `db`. 
+
+**Pro přihlášení do aplikace využijte login `admin` a heslo `Admin.Heslo1`.**
 
 
-Installation
+Požadavky na verzi SW
 ------------
 
-The best way to install Web Project is using Composer. If you don't have Composer yet,
-download it following [the instructions](https://doc.nette.org/composer). Then use command:
-
-	composer create-project nette/web-project path/to/install
-	cd path/to/install
+- PHP 8.2
+- MySQL
+- Nette 3.1
 
 
-Make directories `temp/` and `log/` writable.
+Instalace
+------------
+
+Po stažení kódu z GitLabu je potřeba udělat několik kroků
+
+1. Nainstalovat balíčky příkazem `composer install`
+2. Naimportovat SQL soubor (`db/sportisimo.sql`) do databázového serveru
+3. Přejmenovat soubor `config/example.local.neon` na `config/local.neon`
+4. Zadat přihlašovací údaje k databázi a název databáze v souboru `config/local.neon`
+5. Případně nastavit práva pro zápis pro adresáře `temp/` a `log/`
 
 
-Web Server Setup
+Nastavení webového serveru
 ----------------
 
-The simplest way to get started is to start the built-in PHP server in the root directory of your project:
+Pro jednoduché spuštění stačí v rootu projektu spustit v konzoli příkaz:
 
 	php -S localhost:8000 -t www
 
-Then visit `http://localhost:8000` in your browser to see the welcome page.
+Po zadání `http://localhost:8000` do prohlížeče, se zobrazí aplikace.
 
-For Apache or Nginx, setup a virtual host to point to the `www/` directory of the project and you
-should be ready to go.
+V případě využití Apache nebo Nginx stačí nasměrovat document root do adresáře `www/`.
 
-**It is CRITICAL that whole `app/`, `config/`, `log/` and `temp/` directories are not accessible directly
-via a web browser. See [security warning](https://nette.org/security-warning).**
