@@ -8,6 +8,7 @@ use App\Models\Brand;
 use App\Models\Parameters;
 use App\Presenters\BasePresenter;
 use Nette\Utils\Paginator;
+use Nette\Utils\Validators;
 
 class BrandPresenter extends BasePresenter
 {
@@ -37,15 +38,23 @@ class BrandPresenter extends BasePresenter
 
         $itemForPageList = $this->parametersModel->get('itemForPageList');
 
+        // Výběr stránky a validace hodnoty
         $page = 1;
-        if (!empty($params['page']))
+        if (!empty($params['page']) && $params['page'] > 0 && Validators::is($params['page'], 'int'))
         {
             $page = (int) $params['page'];
         }
 
+        // Počet položek na stránku musí odpovídat zadanému seznamu hodnot v configu
+        $itemForCount = $itemForPageList[0];
+        if (!empty($this->itemForCount) && Validators::is($this->itemForCount, 'int') && in_array($this->itemForCount, $itemForPageList))
+        {
+            $itemForCount = (int) $this->itemForCount;
+        }
+
         $paginator = new Paginator();
         $paginator->setPage($page);
-        $paginator->setItemsPerPage(empty($this->itemForCount) ? $itemForPageList[0] : (int) $this->itemForCount);
+        $paginator->setItemsPerPage($itemForCount);
         $paginator->setItemCount($this->brandModel->getCount($params));
 
         $this->template->list = $this->brandModel->getAll($params, $paginator->getLength(), $paginator->getOffset());
@@ -54,6 +63,12 @@ class BrandPresenter extends BasePresenter
         $this->template->actualPage = $page;
     }
 
+    /**
+     * Vrací data pro editační formulář
+     *
+     * @return void
+     * @throws \Nette\Application\AbortException
+     */
     public function actionGetData()
     {
         $params = $this->request->parameters;
@@ -74,6 +89,12 @@ class BrandPresenter extends BasePresenter
         $this->sendJson(['success' => FALSE]);
     }
 
+    /**
+     * Maže konkrétní záznam z databáze
+     *
+     * @return void
+     * @throws \Nette\Application\AbortException
+     */
     public function actionDelete()
     {
         $post = $this->request->post;

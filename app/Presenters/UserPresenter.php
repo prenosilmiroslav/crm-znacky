@@ -9,6 +9,7 @@ use App\Components\UserForm\UserForm;
 use App\Models\Parameters;
 use App\Models\User;
 use Nette\Utils\Paginator;
+use Nette\Utils\Validators;
 
 final class UserPresenter extends BasePresenter
 {
@@ -38,15 +39,23 @@ final class UserPresenter extends BasePresenter
 
         $itemForPageList = $this->parametersModel->get('itemForPageList');
 
+        // Výběr stránky a validace hodnoty
         $page = 1;
-        if (!empty($params['page']))
+        if (!empty($params['page']) && $params['page'] > 0 && Validators::is($params['page'], 'int'))
         {
             $page = (int) $params['page'];
         }
 
+        // Počet položek na stránku musí odpovídat zadanému seznamu hodnot v configu
+        $itemForCount = $itemForPageList[0];
+        if (!empty($this->itemForCount) && Validators::is($this->itemForCount, 'int') && in_array($this->itemForCount, $itemForPageList))
+        {
+            $itemForCount = (int) $this->itemForCount;
+        }
+
         $paginator = new Paginator();
         $paginator->setPage($page);
-        $paginator->setItemsPerPage(empty($this->itemForCount) ? $itemForPageList[0] : (int) $this->itemForCount);
+        $paginator->setItemsPerPage($itemForCount);
         $paginator->setItemCount($this->userModel->getCount($params));
 
         $this->template->list = $this->userModel->getAll($params, $paginator->getLength(), $paginator->getOffset());
@@ -55,6 +64,12 @@ final class UserPresenter extends BasePresenter
         $this->template->actualPage = $page;
     }
 
+    /**
+     * Vrací data pro editační formulář
+     *
+     * @return void
+     * @throws \Nette\Application\AbortException
+     */
     public function actionGetData()
     {
         $params = $this->request->parameters;
@@ -75,6 +90,12 @@ final class UserPresenter extends BasePresenter
         $this->sendJson(['success' => FALSE]);
     }
 
+    /**
+     * Maže konkrétní záznam z databáze
+     *
+     * @return void
+     * @throws \Nette\Application\AbortException
+     */
     public function actionDelete()
     {
         $post = $this->request->post;
