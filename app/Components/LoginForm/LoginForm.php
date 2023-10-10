@@ -35,7 +35,7 @@ class LoginForm extends Control
             {
                 $this->presenter->getUser()->login($values->username, $values->password);
                 $this->presenter->flashMessage('Uživatel úspěšně přihlášen', 'success');
-                $this->presenter->redirect('Home:default');
+                $this->presenter->redirect('Dashboard:default');
             }
             catch (AuthenticationException $exception)
             {

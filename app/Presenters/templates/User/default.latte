@@ -1,0 +1,209 @@
+{block content}
+
+    <div class="row content-block">
+        <div class="col s12">
+
+            <a href="#!" id="btnAddUser" class="btn btn-action tooltipped" data-position="right" data-tooltip="Přidat nového uživatele">
+                <i class="material-icons">add</i> Přidat uživatele
+            </a>
+
+            <table class="responsive-table">
+                <thead>
+                    <tr>
+                        <th>
+                            Uživatelské jméno
+                            <a n:href="this order => 'name', by => 'asc'" class="btn-order tooltipped" data-position="top" data-tooltip="Seřadit značky vzestupně podle názvu">
+                                <i class="material-icons">arrow_upward</i>
+                            </a>
+                            <a n:href="this order => 'name', by => 'desc'" class="btn-order tooltipped" data-position="top" data-tooltip="Seřadit značky sestupně podle názvu">
+                                <i class="material-icons">arrow_downward</i>
+                            </a>
+                        </th>
+                        <th class="center-align">
+                            Poslední přihlášení
+                            <a n:href="this order => 'last_login_date', by => 'asc'" class="btn-order tooltipped" data-position="top" data-tooltip="Seřadit značky vzestupně podle názvu">
+                                <i class="material-icons">arrow_upward</i>
+                            </a>
+                            <a n:href="this order => 'last_login_date', by => 'desc'" class="btn-order tooltipped" data-position="top" data-tooltip="Seřadit značky sestupně podle názvu">
+                                <i class="material-icons">arrow_downward</i>
+                            </a>
+                        </th>
+                        <th>
+                            Akce
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr n:foreach="$list as $item" id="user-row-{$item->id}">
+                        <td>{$item->username}</td>
+                        <td class="center-align">
+                            {if empty($item->last_login_date)}
+                                <span>-</span>
+                            {else}
+                                {$item->last_login_date|date:'d.m.Y H:i:s'}
+                            {/if}
+                        </td>
+                        <td>
+                            <a href="#!" class="tooltipped btn-delete" data-user-id="{$item->id}" data-position="top" data-tooltip="Smazat uživatele">Smazat</a>
+                            <a href="#!" class="tooltipped btn-edit" data-user-id="{$item->id}" data-position="top" data-tooltip="Upravit uživatele">Editovat</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <ul class="pagination">
+                <li class="waves-effect" n:if="!$paginator->isFirst()"><a n:href="this page => $paginator->getPage() - 1"><i class="material-icons">chevron_left</i></a></li>
+                <li n:class="$p == $actualPage ? 'active' : 'waves-effect'" n:for="$p = 1; $p <= $paginator->getPageCount(); $p++">
+                    <a n:href="this page => $p">{$p}</a>
+                </li>
+                <li class="waves-effect" n:if="!$paginator->isLast()"><a n:href="this page => $paginator->getPage() + 1"><i class="material-icons">chevron_right</i></a></li>
+            </ul>
+
+            <ul class="pagination">
+                <li class="waves-effect" n:foreach="$itemForPageList as $number"><a n:href="this itemForCount => $number">{$number}</a></li>
+            </ul>
+        </div>
+    </div>
+
+    {control userForm}
+
+    <div id="deleteUserModal" class="modal modal-fixed-footer modal-alert">
+        <div class="modal-content">
+            <h4 class="center-align">Opravdu chcete smazat uživatele?</h4>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="btn" id="btnAcceptDeleteUser" data-user-id="">Ano</a>
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Ne</a>
+        </div>
+    </div>
+
+{/block}
+
+{block scripts}
+    <script>
+        Nette.initOnLoad();
+
+        document.addEventListener('DOMContentLoaded', function()
+        {
+            var userFormModal = M.Modal.init(document.getElementById('modal1'), {
+                onCloseEnd: function ()
+                {
+                    document.getElementsByTagName('form')[0].reset();
+                    document.getElementsByName('user_id')[0].value = '';
+                }
+            });
+
+            // Přidání uživatele
+            document.getElementById('btnAddUser').addEventListener('click', function (event)
+            {
+                event.preventDefault();
+                userFormModal.open();
+            });
+
+            // Editace uživatele
+            var btnEditList = document.getElementsByClassName('btn-edit');
+            for (var i = 0; i < btnEditList.length; i++)
+            {
+                btnEditList[i].addEventListener('click', function (event)
+                {
+                    event.preventDefault();
+                    var userId = this.getAttribute('data-user-id')
+
+                    fetch('/user/get-data/?userId=' + encodeURIComponent(userId), {
+                        method: 'GET',
+                        mode: 'same-origin',
+                        cache: 'no-cache',
+                        credentials: 'same-origin',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                        .then(function (response)
+                        {
+                            return response.json();
+                        })
+                        .then(function (data)
+                        {
+                            if (data.success)
+                            {
+                                document.getElementsByName('user_id')[0].value = data.data.id;
+                                document.getElementsByName('username')[0].value = data.data.username;
+                                M.updateTextFields();
+                                userFormModal.open();
+                            }
+                            else
+                            {
+                                M.toast({ html: 'Nepodařilo se načíst data do formuláře' });
+                            }
+                        })
+                        .catch(function (error)
+                        {
+                            M.toast({ html: error });
+                        });
+                });
+            };
+
+            // Smazání uživatele
+            var userDeteleAlertModal = M.Modal.init(document.getElementById('deleteUserModal'), {
+                onCloseEnd: function ()
+                {
+                    document.getElementById('btnAcceptDeleteUser').setAttribute('data-user-id', '');
+                }
+            });
+
+            var btnDeleteList = document.getElementsByClassName('btn-delete');
+            for (var i = 0; i < btnDeleteList.length; i++)
+            {
+                btnDeleteList[i].addEventListener('click', function (event)
+                {
+                    event.preventDefault();
+                    var userId = this.getAttribute('data-user-id')
+
+                    document.getElementById('btnAcceptDeleteUser').setAttribute('data-user-id', userId);
+                    userDeteleAlertModal.open();
+                });
+            };
+
+            document.getElementById('btnAcceptDeleteUser').addEventListener('click', function (event)
+            {
+                event.preventDefault();
+                var userId = this.getAttribute('data-user-id');
+
+                fetch({link User:delete}, {
+                        method: 'POST',
+                        body: 'userId=' + encodeURIComponent(userId),
+                        mode: 'same-origin',
+                        cache: 'no-cache',
+                        credentials: 'same-origin',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(function (response)
+                    {
+                        return response.json();
+                    })
+                    .then(function (success)
+                    {
+                        if (success)
+                        {
+                            M.toast({ html: 'Uživatel úspěšně smazán' });
+                            document.getElementById('user-row-' + userId).remove();
+                            userDeteleAlertModal.close();
+                        }
+                        else
+                        {
+                            M.toast({ html: 'Uživatele se nepodařilo smazat' });
+                        }
+                    })
+                    .catch(function (error)
+                    {
+                        M.toast({ html: error });
+                    });
+            });
+        });
+    </script>
+{/block}

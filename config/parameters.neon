@@ -1,1 +1,15 @@
 parameters:
+    pageHeader: # Názvy stránek a prolinkování přes tlačítko zpět
+        Dashboard:
+            link: FALSE
+            name: Dashboard
+
+        Brands:
+            link: 'Dashboard:default'
+            name: Značky
+
+        User:
+            link: 'Dashboard:default'
+            name: Uživatelé
+
+    itemForPageList: [10, 20, 30]   # Počet položek na stránku

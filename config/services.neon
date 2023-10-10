@@ -2,8 +2,15 @@ services:
     - App\Router\RouterFactory::createRouter
     - App\service\Authenticator
 
+    # Modely
+    - App\Models\BaseModel
+    - App\Models\Parameters(@\Nette\Database\Explorer, %parameters%)
+    - App\Models\User
+
     # Komponenty
     - App\Components\LoginForm\ILoginFormFactory
+    - App\Components\PageHeader\IPageHeaderFactory
+    - App\Components\UserForm\IUserFormFactory
 
 
 search:

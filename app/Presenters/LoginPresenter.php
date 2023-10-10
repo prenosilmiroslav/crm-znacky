@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Presenters;
 
 use App\Components\LoginForm\ILoginFormFactory;
 use App\Presenters\BasePresenter;
 
-class LoginPresenter extends BasePresenter
+final class LoginPresenter extends BasePresenter
 {
 
     /** @var ILoginFormFactory $loginFormFactory @inject */
