@@ -1,6 +1,6 @@
 services:
     - App\Router\RouterFactory::createRouter
-    - App\service\Authenticator
+    - App\Service\Authenticator
 
     # Modely
     - App\Models\BaseModel
