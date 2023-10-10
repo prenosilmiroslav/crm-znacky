@@ -15,6 +15,7 @@ class BaseModel
     /** @var Explorer $database */
     protected $database;
 
+    /** @var string[] $allowSort Povolené řazení */
     protected $allowSort = ['asc', 'desc'];
 
 

@@ -17,6 +17,8 @@ class Brand extends BaseModel
 
 
     /**
+     * Výběr všech značek z databáze podle zadaných parametrů
+     *
      * @param array $options
      * @param int|NULL $length
      * @param int|NULL $offset
@@ -64,6 +66,8 @@ class Brand extends BaseModel
     }
 
     /**
+     * Vrátí počet záznamů podle zadaných parametrů
+     *
      * @param array $options
      * @return int
      */
@@ -72,6 +76,13 @@ class Brand extends BaseModel
         return $this->getAll(array_merge(['getCount' => TRUE], $options));
     }
 
+    /**
+     * Vytvoří nebo uloží změny u značky podle toho, zda jde o existující záznam
+     *
+     * @param ArrayHash $values
+     * @param int|NULL $id
+     * @return void
+     */
     public function save(ArrayHash $values, int $id = NULL): void
     {
         $data = [
@@ -99,6 +110,8 @@ class Brand extends BaseModel
     }
 
     /**
+     * Vrátí konkrétní značku
+     *
      * @param int $id
      * @return ActiveRow|null
      */
@@ -110,6 +123,8 @@ class Brand extends BaseModel
     }
 
     /**
+     * Vrátí značku podle názvu
+     *
      * @param string $name
      * @return ActiveRow|null
      */
@@ -121,6 +136,8 @@ class Brand extends BaseModel
     }
 
     /**
+     * Odstraní značku z databáze
+     *
      * @param int $id
      * @return void
      */
