@@ -4,7 +4,7 @@ parameters:
             link: FALSE
             name: Dashboard
 
-        Brands:
+        Brand:
             link: 'Dashboard:default'
             name: Značky
 

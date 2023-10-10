@@ -1,25 +1,24 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Presenters;
 
-use App\Components\UserForm\IUserFormFactory;
+use App\Components\BrandForm\IBrandFormFactory;
+use App\Models\Brand;
 use App\Models\Parameters;
-use App\Models\User;
+use App\Presenters\BasePresenter;
 use Nette\Utils\Paginator;
 
-final class UserPresenter extends BasePresenter
+class BrandPresenter extends BasePresenter
 {
 
-    /** @var User $userModel @inject */
-    public $userModel;
+    /** @var Brand $brandModel @inject */
+    public $brandModel;
 
     /** @var Parameters $parametersModel @inject */
     public $parametersModel;
 
-    /** @var IUserFormFactory $userFormFactory @inject */
-    public $userFormFactory;
+    /** @var IBrandFormFactory $brandFormFactory @inject */
+    public $brandFormFactory;
 
     /** @var int $itemForCount @persistent */
     public $itemForCount;
@@ -46,9 +45,9 @@ final class UserPresenter extends BasePresenter
         $paginator = new Paginator();
         $paginator->setPage($page);
         $paginator->setItemsPerPage(empty($this->itemForCount) ? $itemForPageList[0] : (int) $this->itemForCount);
-        $paginator->setItemCount($this->userModel->getCount($params));
+        $paginator->setItemCount($this->brandModel->getCount($params));
 
-        $this->template->list = $this->userModel->getAll($params, $paginator->getLength(), $paginator->getOffset());
+        $this->template->list = $this->brandModel->getAll($params, $paginator->getLength(), $paginator->getOffset());
         $this->template->itemForPageList = $itemForPageList;
         $this->template->paginator = $paginator;
         $this->template->actualPage = $page;
@@ -58,9 +57,9 @@ final class UserPresenter extends BasePresenter
     {
         $params = $this->request->parameters;
 
-        if (!empty($params['userId']))
+        if (!empty($params['brandId']))
         {
-            $data = $this->userModel->get((int) $params['userId']);
+            $data = $this->brandModel->get((int) $params['brandId']);
 
             if (!empty($data))
             {
@@ -78,18 +77,18 @@ final class UserPresenter extends BasePresenter
     {
         $post = $this->request->post;
 
-        if (!empty($post['userId']))
+        if (!empty($post['brandId']))
         {
-            $this->userModel->remove((int) $post['userId']);
+            $this->brandModel->remove((int) $post['brandId']);
             $this->sendJson(['success' => TRUE]);
         }
 
         $this->sendJson(['success' => FALSE]);
     }
 
-    protected function createComponentUserForm()
+    protected function createComponentBrandForm()
     {
-        return $this->userFormFactory->create();
+        return $this->brandFormFactory->create();
     }
 
 }

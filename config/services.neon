@@ -4,10 +4,12 @@ services:
 
     # Modely
     - App\Models\BaseModel
+    - App\Models\Brand
     - App\Models\Parameters(@\Nette\Database\Explorer, %parameters%)
     - App\Models\User
 
     # Komponenty
+    - App\Components\BrandForm\IBrandFormFactory
     - App\Components\LoginForm\ILoginFormFactory
     - App\Components\PageHeader\IPageHeaderFactory
     - App\Components\UserForm\IUserFormFactory

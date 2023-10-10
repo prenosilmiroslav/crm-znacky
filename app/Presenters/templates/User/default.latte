@@ -12,19 +12,19 @@
                     <tr>
                         <th>
                             Uživatelské jméno
-                            <a n:href="this order => 'name', by => 'asc'" class="btn-order tooltipped" data-position="top" data-tooltip="Seřadit značky vzestupně podle názvu">
+                            <a n:href="this order => 'name', by => 'asc'" class="btn-order tooltipped" data-position="top" data-tooltip="Seřadit uživatele vzestupně podle názvu">
                                 <i class="material-icons">arrow_upward</i>
                             </a>
-                            <a n:href="this order => 'name', by => 'desc'" class="btn-order tooltipped" data-position="top" data-tooltip="Seřadit značky sestupně podle názvu">
+                            <a n:href="this order => 'name', by => 'desc'" class="btn-order tooltipped" data-position="top" data-tooltip="Seřadit uživatele sestupně podle názvu">
                                 <i class="material-icons">arrow_downward</i>
                             </a>
                         </th>
                         <th class="center-align">
                             Poslední přihlášení
-                            <a n:href="this order => 'last_login_date', by => 'asc'" class="btn-order tooltipped" data-position="top" data-tooltip="Seřadit značky vzestupně podle názvu">
+                            <a n:href="this order => 'last_login_date', by => 'asc'" class="btn-order tooltipped" data-position="top" data-tooltip="Seřadit uživatele vzestupně podle data přihlášení">
                                 <i class="material-icons">arrow_upward</i>
                             </a>
-                            <a n:href="this order => 'last_login_date', by => 'desc'" class="btn-order tooltipped" data-position="top" data-tooltip="Seřadit značky sestupně podle názvu">
+                            <a n:href="this order => 'last_login_date', by => 'desc'" class="btn-order tooltipped" data-position="top" data-tooltip="Seřadit uživatele sestupně podle data přihlášení">
                                 <i class="material-icons">arrow_downward</i>
                             </a>
                         </th>
@@ -86,7 +86,7 @@
 
         document.addEventListener('DOMContentLoaded', function()
         {
-            var userFormModal = M.Modal.init(document.getElementById('modal1'), {
+            var userFormModal = M.Modal.init(document.getElementById('userFormModal'), {
                 onCloseEnd: function ()
                 {
                     document.getElementsByTagName('form')[0].reset();

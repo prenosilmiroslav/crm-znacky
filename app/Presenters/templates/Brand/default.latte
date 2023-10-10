@@ -3,7 +3,7 @@
     <div class="row content-block">
         <div class="col s12">
 
-            <a href="" class="btn btn-action tooltipped" data-position="right" data-tooltip="Přidat novou značku">
+            <a href="#!" id="btnAddBrand" class="btn btn-action tooltipped" data-position="right" data-tooltip="Přidat novou značku">
                 <i class="material-icons">add</i> Přidat značku
             </a>
 
@@ -12,10 +12,10 @@
                     <tr>
                         <th>
                             Název
-                            <a href="" class="btn-order tooltipped" data-position="top" data-tooltip="Seřadit značky vzestupně podle názvu">
+                            <a n:href="this order => 'name', by => 'asc'" class="btn-order tooltipped" data-position="top" data-tooltip="Seřadit značky vzestupně podle názvu">
                                 <i class="material-icons">arrow_upward</i>
                             </a>
-                            <a href="" class="btn-order tooltipped" data-position="top" data-tooltip="Seřadit značky sestupně podle názvu">
+                            <a n:href="this order => 'name', by => 'desc'" class="btn-order tooltipped" data-position="top" data-tooltip="Seřadit značky sestupně podle názvu">
                                 <i class="material-icons">arrow_downward</i>
                             </a>
                         </th>
@@ -26,49 +26,168 @@
                 </thead>
 
                 <tbody>
-                    <tr>
-                        <td>Test</td>
+                    <tr n:foreach="$list as $item" id="brand-row-{$item->id}">
+                        <td>{$item->name}</td>
                         <td>
-                            <a href="" class="tooltipped" data-position="top" data-tooltip="Smazat značku">Smazat</a>
-                            <a href="" class="tooltipped" data-position="top" data-tooltip="Upravit značku">Editovat</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Test</td>
-                        <td>
-                            <a href="" class="tooltipped" data-position="top" data-tooltip="Smazat značku">Smazat</a>
-                            <a href="" class="tooltipped" data-position="top" data-tooltip="Upravit značku">Editovat</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Test</td>
-                        <td>
-                            <a href="" class="tooltipped" data-position="top" data-tooltip="Smazat značku">Smazat</a>
-                            <a href="" class="tooltipped" data-position="top" data-tooltip="Upravit značku">Editovat</a>
+                            <a href="#!" class="tooltipped btn-delete" data-brand-id="{$item->id}" data-position="top" data-tooltip="Smazat značku">Smazat</a>
+                            <a href="#!" class="tooltipped btn-edit" data-brand-id="{$item->id}" data-position="top" data-tooltip="Upravit značku">Editovat</a>
                         </td>
                     </tr>
                 </tbody>
             </table>
 
             <ul class="pagination">
-                <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-                <li class="active"><a href="#!">1</a></li>
-                <li class="waves-effect"><a href="#!">2</a></li>
-                <li class="waves-effect"><a href="#!">3</a></li>
-                <li class="waves-effect"><a href="#!">4</a></li>
-                <li class="waves-effect"><a href="#!">5</a></li>
-                <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+                <li class="waves-effect" n:if="!$paginator->isFirst()"><a n:href="this page => $paginator->getPage() - 1"><i class="material-icons">chevron_left</i></a></li>
+                <li n:class="$p == $actualPage ? 'active' : 'waves-effect'" n:for="$p = 1; $p <= $paginator->getPageCount(); $p++">
+                    <a n:href="this page => $p">{$p}</a>
+                </li>
+                <li class="waves-effect" n:if="!$paginator->isLast()"><a n:href="this page => $paginator->getPage() + 1"><i class="material-icons">chevron_right</i></a></li>
             </ul>
 
             <ul class="pagination">
-                <li class="waves-effect"><a href="#!">10</a></li>
-                <li class="waves-effect"><a href="#!">20</a></li>
-                <li class="waves-effect"><a href="#!">30</a></li>
+                <li class="waves-effect" n:foreach="$itemForPageList as $number"><a n:href="this itemForCount => $number">{$number}</a></li>
             </ul>
+        </div>
+    </div>
+
+    {control brandForm}
+
+    <div id="deleteBrandModal" class="modal modal-fixed-footer modal-alert">
+        <div class="modal-content">
+            <h4 class="center-align">Opravdu chcete smazat značku?</h4>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="btn" id="btnAcceptDeleteBrand" data-user-id="">Ano</a>
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Ne</a>
         </div>
     </div>
 
 {/block}
 
 {block scripts}
+    <script>
+        Nette.initOnLoad();
+
+        document.addEventListener('DOMContentLoaded', function()
+        {
+            var brandFormModal = M.Modal.init(document.getElementById('brandFormModal'), {
+                onCloseEnd: function ()
+                {
+                    document.getElementsByTagName('form')[0].reset();
+                    document.getElementsByName('brand_id')[0].value = '';
+                }
+            });
+
+            // Přidání značky
+            document.getElementById('btnAddBrand').addEventListener('click', function (event)
+            {
+                event.preventDefault();
+                brandFormModal.open();
+            });
+
+            // Editace značky
+            var btnEditList = document.getElementsByClassName('btn-edit');
+            for (var i = 0; i < btnEditList.length; i++)
+            {
+                btnEditList[i].addEventListener('click', function (event)
+                {
+                    event.preventDefault();
+                    var brandId = this.getAttribute('data-brand-id')
+
+                    fetch('/brand/get-data/?brandId=' + encodeURIComponent(brandId), {
+                        method: 'GET',
+                        mode: 'same-origin',
+                        cache: 'no-cache',
+                        credentials: 'same-origin',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                        .then(function (response)
+                        {
+                            return response.json();
+                        })
+                        .then(function (data)
+                        {
+                            if (data.success)
+                            {
+                                document.getElementsByName('brand_id')[0].value = data.data.id;
+                                document.getElementsByName('name')[0].value = data.data.name;
+                                M.updateTextFields();
+                                brandFormModal.open();
+                            }
+                            else
+                            {
+                                M.toast({ html: 'Nepodařilo se načíst data do formuláře' });
+                            }
+                        })
+                        .catch(function (error)
+                        {
+                            M.toast({ html: error });
+                        });
+                });
+            };
+
+            // Smazání značky
+            var brandDeteleAlertModal = M.Modal.init(document.getElementById('deleteBrandModal'), {
+                onCloseEnd: function ()
+                {
+                    document.getElementById('btnAcceptDeleteBrand').setAttribute('data-brand-id', '');
+                }
+            });
+
+            var btnDeleteList = document.getElementsByClassName('btn-delete');
+            for (var i = 0; i < btnDeleteList.length; i++)
+            {
+                btnDeleteList[i].addEventListener('click', function (event)
+                {
+                    event.preventDefault();
+                    var brandId = this.getAttribute('data-brand-id')
+
+                    document.getElementById('btnAcceptDeleteBrand').setAttribute('data-brand-id', brandId);
+                    brandDeteleAlertModal.open();
+                });
+            };
+
+            document.getElementById('btnAcceptDeleteBrand').addEventListener('click', function (event)
+            {
+                event.preventDefault();
+                var brandId = this.getAttribute('data-brand-id');
+
+                fetch({link Brand:delete}, {
+                    method: 'POST',
+                    body: 'brandId=' + encodeURIComponent(brandId),
+                    mode: 'same-origin',
+                    cache: 'no-cache',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                    .then(function (response)
+                    {
+                        return response.json();
+                    })
+                    .then(function (success)
+                    {
+                        if (success)
+                        {
+                            M.toast({ html: 'Značka úspěšně smazána' });
+                            document.getElementById('brand-row-' + brandId).remove();
+                            brandDeteleAlertModal.close();
+                        }
+                        else
+                        {
+                            M.toast({ html: 'Značku se nepodařilo smazat' });
+                        }
+                    })
+                    .catch(function (error)
+                    {
+                        M.toast({ html: error });
+                    });
+            });
+        });
+    </script>
 {/block}

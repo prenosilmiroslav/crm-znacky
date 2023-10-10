@@ -67,7 +67,7 @@ class User extends BaseModel
                     break;
 
                 default:
-                    $order = "id DESC";
+                    $order = 'id DESC';
             }
 
             $rows->order($order);

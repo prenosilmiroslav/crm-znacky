@@ -35,8 +35,8 @@
 						<i class="material-icons">new_releases</i>
 					</a>
 				</li>
-				<li class="tooltipped" data-position="right" data-tooltip="Výpis značek">
-					<a href="">
+				<li n:class="$presenter->isLinkCurrent('Brand:default') ? 'active'">
+					<a n:href="Brand:default" class="tooltipped" data-position="right" data-tooltip="Výpis značek">
 						<i class="material-icons">local_offer</i>
 					</a>
 				</li>
