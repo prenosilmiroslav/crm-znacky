@@ -37,7 +37,7 @@ class Brand extends BaseModel
         // Řazení
         if (!empty($options['order']))
         {
-            $sort = in_array(Strings::lower($options['by']), $this->allowSort) ? Strings::upper($options['by']) : $this->allowSort[0];
+            $sort = !empty($options['by']) && in_array(Strings::upper($options['by']), $this->allowSort) ? Strings::upper($options['by']) : $this->allowSort[0];
 
             switch ($options['order'])
             {
