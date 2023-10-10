@@ -6,6 +6,15 @@ $mainMenuWidth: 70px
   width: 35%
   height: 20% !important
 
+.btn-primary
+  background-color: $layoutColor
+  color: $mainLayoutTextColor
+  text-align: center
+
+  &:hover
+    background-color: $layoutColor
+    color: $mainLayoutTextColor
+
 #main-container
   margin-bottom: 0px
   font-size: 16px
@@ -129,7 +138,6 @@ $mainMenuWidth: 70px
 
               &:last-child
                 width: 200px
-                text-align: right
                 padding-right: 10px
 
               .btn-order
@@ -149,7 +157,6 @@ $mainMenuWidth: 70px
 
               &:last-child
                 width: 200px
-                text-align: right
                 padding-right: 10px
 
                 a
@@ -180,4 +187,11 @@ $mainMenuWidth: 70px
         a
           .material-icons
             color: $layoutColor !important
+
+#dashboard-card-wrapper
+  .col
+    background-color: $dashboardCardColor
+    color: $mainLayoutTextColor
+    margin: 0px 10px
+    box-shadow: 0px 2px 5px $contentTitleShadowBoxColor
 

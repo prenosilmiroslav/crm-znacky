@@ -35,7 +35,7 @@ class BrandForm extends Control
             ->setRequired('Pole %label je povinné');
 
         $form->addSubmit('_save', 'Uložit')
-            ->setHtmlAttribute('class', 'btn');
+            ->setHtmlAttribute('class', 'btn btn-primary');
 
         $form->onSuccess[] = function (Form $form, ArrayHash $values)
         {

@@ -28,13 +28,17 @@
                                 <i class="material-icons">arrow_downward</i>
                             </a>
                         </th>
-                        <th>
+                        <th class="right-align">
                             Akce
                         </th>
                     </tr>
                 </thead>
 
                 <tbody>
+                    <tr n:if="empty($list)">
+                        <td colspan="3" class="center-align">Nebyl nalezen žádný záznam</td>
+                    </tr>
+
                     <tr n:foreach="$list as $item" id="user-row-{$item->id}">
                         <td>{$item->username}</td>
                         <td class="center-align">
@@ -44,7 +48,7 @@
                                 {$item->last_login_date|date:'d.m.Y H:i:s'}
                             {/if}
                         </td>
-                        <td>
+                        <td class="right-align">
                             <a href="#!" class="tooltipped btn-delete" data-user-id="{$item->id}" data-position="top" data-tooltip="Smazat uživatele">Smazat</a>
                             <a href="#!" class="tooltipped btn-edit" data-user-id="{$item->id}" data-position="top" data-tooltip="Upravit uživatele">Editovat</a>
                         </td>
@@ -73,7 +77,7 @@
             <h4 class="center-align">Opravdu chcete smazat uživatele?</h4>
         </div>
         <div class="modal-footer">
-            <a href="#!" class="btn" id="btnAcceptDeleteUser" data-user-id="">Ano</a>
+            <a href="#!" class="btn btn-primary" id="btnAcceptDeleteUser" data-user-id="">Ano</a>
             <a href="#!" class="modal-close waves-effect waves-green btn-flat">Ne</a>
         </div>
     </div>
@@ -99,6 +103,7 @@
             {
                 event.preventDefault();
                 userFormModal.open();
+                document.getElementsByName('username')[0].focus();
             });
 
             // Editace uživatele
@@ -132,6 +137,7 @@
                                 document.getElementsByName('username')[0].value = data.data.username;
                                 M.updateTextFields();
                                 userFormModal.open();
+                                document.getElementsByName('username')[0].focus();
                             }
                             else
                             {

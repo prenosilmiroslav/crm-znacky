@@ -19,16 +19,20 @@
                                 <i class="material-icons">arrow_downward</i>
                             </a>
                         </th>
-                        <th>
+                        <th class="right-align">
                             Akce
                         </th>
                     </tr>
                 </thead>
 
                 <tbody>
+                    <tr n:if="empty($list)">
+                        <td colspan="2" class="center-align">Nebyl nalezen žádný záznam</td>
+                    </tr>
+
                     <tr n:foreach="$list as $item" id="brand-row-{$item->id}">
                         <td>{$item->name}</td>
-                        <td>
+                        <td class="right-align">
                             <a href="#!" class="tooltipped btn-delete" data-brand-id="{$item->id}" data-position="top" data-tooltip="Smazat značku">Smazat</a>
                             <a href="#!" class="tooltipped btn-edit" data-brand-id="{$item->id}" data-position="top" data-tooltip="Upravit značku">Editovat</a>
                         </td>
@@ -57,7 +61,7 @@
             <h4 class="center-align">Opravdu chcete smazat značku?</h4>
         </div>
         <div class="modal-footer">
-            <a href="#!" class="btn" id="btnAcceptDeleteBrand" data-user-id="">Ano</a>
+            <a href="#!" class="btn btn-primary" id="btnAcceptDeleteBrand" data-user-id="">Ano</a>
             <a href="#!" class="modal-close waves-effect waves-green btn-flat">Ne</a>
         </div>
     </div>
@@ -83,6 +87,7 @@
             {
                 event.preventDefault();
                 brandFormModal.open();
+                document.getElementsByName('name')[0].focus();
             });
 
             // Editace značky
@@ -116,6 +121,7 @@
                                 document.getElementsByName('name')[0].value = data.data.name;
                                 M.updateTextFields();
                                 brandFormModal.open();
+                                document.getElementsByName('name')[0].focus();
                             }
                             else
                             {
